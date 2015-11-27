@@ -1,12 +1,7 @@
 // ///////////////////////////////
-// Settings
+// Configuration
 // ///////////////////////////////
-var sassFile = './scss/onion.scss';
-var filesToWatch = ['./scss/**/*.scss', './kostym_components/**/*.scss'];
-var destFolder = './dist';
-var browserSupport = ['last 2 versions', 'ie >= 9'];
-var base64EncodeFileTypes = ['svg'];
-var pathToEditor = '/Applications/PhpStorm.app/Contents/MacOS/phpstorm';
+var config = require(process.cwd()+'/gulpfile.config.js');
 
 // ///////////////////////////////
 // Requirements
@@ -46,12 +41,12 @@ exports.bs = function(bs) {
 // ///////////////////////////////
 gulp.task('css-watch', function() {
   'use strict';
-  gulp.watch(filesToWatch, ['css-compile']);
+  gulp.watch(config.tasks.css.filesToWatch, ['css-compile']);
 });
 
 gulp.task('css-clean', function(cb) {
   'use strict';
-  del([destFolder])
+  del([config.tasks.css.destinationFolder + '/**/*.css', config.tasks.css.destinationFolder + '/**/*.css.map'])
     .then(function(paths) {
       if (paths.length) {
         gutil.log(
@@ -71,39 +66,33 @@ gulp.task('css-compile', ['css-clean'], function() {
   var fileSize = size({
     showFiles: true
   });
-  return gulp.src(sassFile)
+  return gulp.src(config.tasks.css.sassFiles)
     .pipe(sourcemaps.init())
-      .pipe(cssGlobbing({
-        extensions: ['.scss']
-      }))
-      .pipe(sass())
-        .on('error', function(event) {
-          var message = path.basename(event.file) + ' on line ' + event.line + ':' + event.column;
-          errorInCompilation = true;
+    .pipe(cssGlobbing({
+      extensions: ['.scss']
+    }))
+    .pipe(sass())
+    .on('error', function(event) {
+      var message = path.basename(event.file) + ' on line ' + event.line + ':' + event.column;
+      errorInCompilation = true;
 
-          notifier.notify({
-            title: 'SCSS Error! @ ' + ((new Date()).timeNow()),
-            message: message,
-            icon: 'gulpfile.js/css/css-error.png'
-          });
+      notifier.notify({
+        title: 'SCSS Error! @ ' + ((new Date()).timeNow()),
+        message: message,
+        icon: 'gulpfile.js/css/css-error.png'
+      });
 
-          gutil.log(gutil.colors.red('SCSS Error in ' + message));
+      gutil.log(gutil.colors.red('SCSS Error in ' + message));
 
-          exec(pathToEditor + ' ' + event.file + ' --line ' + event.line);
-          this.emit('end');
-        })
-      .pipe(autoprefixer({
-        browsers: browserSupport,
-        cascade: false
-      }))
-      .pipe(gulpif(argv.prod, cssMinify()))
-      .pipe(gulpif(argv.prod, cssBase64({
-        baseDir: destFolder,
-        extensions: base64EncodeFileTypes
-      })))
-      .pipe(fileSize)
+      exec(config.general.pathToEditor + ' ' + event.file + ' --line ' + event.line);
+      this.emit('end');
+    })
+    .pipe(autoprefixer(config.tasks.css.plugins.autoprefixer))
+    .pipe(gulpif(argv.prod, cssMinify()))
+    .pipe(gulpif(argv.prod, cssBase64(config.tasks.css.plugins.base64)))
+    .pipe(fileSize)
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest( destFolder ))
+    .pipe(gulp.dest( config.tasks.css.destinationFolder ))
     .pipe(browserSync.stream({match: '**/*.css'}))
     .on('error', gutil.log)
     .on('end', function() {

@@ -1,10 +1,7 @@
 // ///////////////////////////////
-// Settings
+// Configuration
 // ///////////////////////////////
-var jsFiles = './kostym_components/**/*.js';
-var filesToWatch = [jsFiles];
-var destFolder = './dist';
-var outputFileName = 'onion.js';
+var config = require(process.cwd()+'/gulpfile.config.js');
 
 // ///////////////////////////////
 // Requirements
@@ -14,6 +11,7 @@ var gutil = gutil || require('gulp-util');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 var size = require('gulp-size');
+var babel = require('gulp-babel');
 var del = require('del');
 var notifier = require('node-notifier');
 var concat = require('gulp-concat');
@@ -39,12 +37,12 @@ exports.bs = function(bs) {
 // * js-compile
 // ///////////////////////////////
 gulp.task('js-watch', function() {
-  gulp.watch(filesToWatch, ['js-compile']).on('change', browserSync.reload);
+  gulp.watch([config.tasks.js.jsFiles], ['js-compile']).on('change', browserSync.reload);
 });
 
 gulp.task('js-clean', function(cb) {
   'use strict';
-  del([destFolder + '/**/*.js', destFolder + '/**/*.js.map'])
+  del([config.tasks.js.destinationFolder + '/**/*.js', config.tasks.js.destinationFolder + '/**/*.js.map'])
     .then(function(paths) {
       if (paths.length) {
         gutil.log(
@@ -62,18 +60,19 @@ gulp.task('js-compile', ['js-clean'], function() {
   var fileSize = size({
     showFiles: true
   });
-  return gulp.src(jsFiles)
+  return gulp.src(config.tasks.js.jsFiles)
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(gulpif(argv.prod, eslint.failAfterError()))
     .pipe(sourcemaps.init())
-      .pipe(concat(outputFileName, {
-        newLine: '\n;'
-      }))
-      .pipe(gulpif(argv.prod, uglify()))
-      .pipe(fileSize)
+    .pipe(babel())
+    .pipe(concat(config.tasks.js.outputFileName, {
+      newLine: '\n;'
+    }))
+    .pipe(gulpif(argv.prod, uglify()))
+    .pipe(fileSize)
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(destFolder))
+    .pipe(gulp.dest(config.tasks.js.destinationFolder))
 
     .on('error', gutil.log)
     .on('end', function() {

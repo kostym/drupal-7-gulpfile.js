@@ -1,14 +1,11 @@
-/////////////////////////////////
-// Settings
-/////////////////////////////////
-var svgStoreName = 'icons';
-var svgFiles = './images/svg/' + svgStoreName + '/*.svg';
-var filesToWatch = [svgFiles];
-var destFolder = './dist';
+// ///////////////////////////////
+// Configuration
+// ///////////////////////////////
+var config = require(process.cwd()+'/gulpfile.config.js');
 
-/////////////////////////////////
+// ///////////////////////////////
 // Requirements
-/////////////////////////////////
+// ///////////////////////////////
 var gulp = gulp || require('gulp');
 var gutil = gutil || require('gulp-util');
 var gulpif = require('gulp-if');
@@ -18,25 +15,26 @@ var del = require('del');
 var notifier = require('node-notifier');
 var svgstore = require('gulp-svgstore');
 var svgmin = require('gulp-svgmin');
-var path = require('path');
-var exec = require('child_process').exec;
 
-Date.prototype.timeNow = function () {
-  return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
+Date.prototype.timeNow = function() {
+  'use strict';
+  return ((this.getHours() < 10) ? '0' : '') + this.getHours() + ':' + ((this.getMinutes() < 10) ? '0' : '' ) + this.getMinutes() + ':' + ((this.getSeconds() < 10) ? '0' : '') + this.getSeconds();
 };
 
-/////////////////////////////////
+// ///////////////////////////////
 // Tasks
 // * svg-watch
 // * svg-clean
 // * svg-compile
-/////////////////////////////////
+// ///////////////////////////////
 gulp.task('svg-watch', function() {
-  gulp.watch(filesToWatch, ['svg-compile']);
+  'use strict';
+  gulp.watch([config.tasks.svg.svgFiles], ['svg-compile']);
 });
 
 gulp.task('svg-clean', function(cb) {
-  del([destFolder + '/' + svgStoreName + '.svg']).then(function (paths) {
+  'use strict';
+  del([config.tasks.svg.destinationFolder + '/' + config.tasks.svg.svgStoreName + '.svg']).then(function(paths) {
     if (paths.length) {
       gutil.log(
         gutil.colors.yellow('Deleted SVG file:\n'),
@@ -49,26 +47,24 @@ gulp.task('svg-clean', function(cb) {
   });
 });
 
-gulp.task('svg-compile', ['svg-clean'], function () {
-  var s = size({
+gulp.task('svg-compile', ['svg-clean'], function() {
+  'use strict';
+  var fileSize = size({
     showFiles: true
   });
 
   return gulp
-    .src(svgFiles)
-    .pipe(gulpif(argv.prod, svgmin({
-      plugins: [{
-        removeUnknownsAndDefaults: true
-      }]
-    })))
+    .src(config.tasks.svg.svgFiles)
+    .pipe(gulpif(argv.prod, svgmin(config.tasks.svg.plugins.svgmin)))
     .pipe(svgstore())
-    .pipe(s)
-    .pipe(gulp.dest(destFolder))
+    .pipe(fileSize)
+    .pipe(gulp.dest(config.tasks.svg.destinationFolder))
     .on('error', gutil.log)
-    .on('end', function(){
+    .on('end', function() {
+      'use strict';
       notifier.notify({
         title: 'SVG Compiled @ ' + ((new Date()).timeNow()),
-        message: s.prettySize,
+        message: fileSize.prettySize,
         icon: 'gulpfile.js/svg/svg.png'
       });
       gutil.log(gutil.colors.green('SVG Compiled.'));
