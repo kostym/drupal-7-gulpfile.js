@@ -5,7 +5,7 @@
 ### Get the code
 
 1. Clone this repo in to your drupal theme and rename it to `gulpfile.js`
-`git clone git@github.com:kostym/drupal-7-gulpfile.js.git gulpfile.js`
+  <pre>git clone git@github.com:kostym/drupal-7-gulpfile.js.git gulpfile.js</pre>
 
 2. Copy the `gulpfile.config.js` to theme folder so it's in the same folder as `gulpfile.js`
 
