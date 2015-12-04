@@ -1,4 +1,20 @@
 # Kostym Gulp boilerplate for Drupal 7
+
+* [What is Supported?](#what-is-supported)
+	* [JS](#js)
+	* [CSS](#css)
+	* [SVG](#svg)
+	* [General](#general)
+* [Getting Started](#getting-started)
+	* [Dependencies](#dependencies) 
+	* [Quick setup](#quick-setup)
+	* [Browsersync CSS injection](#browsersync-css-injection)
+* [Gulp tasks](#gulp-tasks)
+	* [Prod flag]()
+	* [JS specific](#js-specific)
+	* [CSS specific](#css-specific)
+	* [SVG specific](#svg-specific)
+
 ## What is Supported?
 ### JS
 * **Linting** with [eslint](http://eslint.org/)
@@ -31,7 +47,7 @@ Make sure these are installed first.
 
 ### Quick setup
 
-1. Clone this repo in to your drupal theme, and name it `gulpfile.js`
+1. Clone this repo into your drupal theme, and name it `gulpfile.js`
   <pre>
   $ cd path/to/your/drupal/theme/
   $ git clone git@github.com:kostym/drupal-7-gulpfile.js.git gulpfile.js
@@ -48,36 +64,35 @@ Make sure these are installed first.
 
 5. Last, change the configuration in your copied `gulpfile.config.js` to match your needs.
 
-#### Browsersync CSS injection
+### Browsersync CSS injection
 For the Browsersync CSS injection to work, we need to include CSS files using the \<link> element instead of @import. We recommend to download and enable the [Link CSS](https://www.drupal.org/project/link_css) module.
 
 ## Gulp tasks
 
 Run a task: `gulp [TaskGoesHere]`
 
-* watch
-* clean
-* compile
-* default
+* watch *Compiles and sync when a file is saved.*
+* clean *Delete generated files*
+* compile *Compile files*
+* default *Runs the compile task then watch*
+
+#### Prod flag
+To speed up the compiling when developing some parts of the build, minifying for example, is only runned when using the `--prod` flag.
+Run a task with flag: `gulp [TaskGoesHere] --prod`
 
 #### JS specific
-
 * js-watch
 * js-clean
 * js-compile
 
 #### SVG specific
-
 * svg-watch
 * svg-clean
 * svg-compile
 
 ####CSS specific
-
 * css-watch
 * css-clean
 * css-compile
 
-### Flags
 
-`--prod`
