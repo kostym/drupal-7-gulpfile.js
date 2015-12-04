@@ -1,0 +1,15 @@
+{
+  "extends": "airbnb/base",
+  "globals": {
+    "Drupal": true,
+    "jQuery": true
+  },
+  "rules": {
+    "comma-dangle": 0,
+    "strict": [2, "function"],
+    "func-names": 0,
+    "id-length": [2, {"min": 2, "exceptions": ["$"]}],
+    "no-new": 0,
+    "camelcase": 0
+  }
+}
