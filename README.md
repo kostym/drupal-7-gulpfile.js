@@ -102,7 +102,7 @@ Run a task with flag: `gulp [TaskGoesHere] --prod`
 For the Browsersync CSS injection to work in Drupal 7, we need to include CSS files using the \<link> element instead of @import. You can achieve this by download and enable the [Link CSS](https://www.drupal.org/project/link_css) module.
 
 ### Airbnb eslint
-There are a lot of Javascript style guides out there. One that we like and recommend is [Airbnb's JavaScript Style Guide](https://github.com/airbnb/javascript). We extend there [eslint config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb) and make it Drupal 7 friendly.
+There are a lot of Javascript style guides out there. One that we like and recommend is [Airbnb's JavaScript Style Guide](https://github.com/airbnb/javascript). We extend their [eslint config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb) and make it Drupal 7 friendly.
 
 1. Install the linter
 <pre>$ npm install --save-dev eslint-config-airbnb eslint</pre>
