@@ -1,140 +1,83 @@
-# Kostym boilerplate gulpfile for Drupal 7
+# Kostym Gulp boilerplate for Drupal 7
+## What is Supported?
+### JS
+* **Linting** with [eslint](http://eslint.org/)
+* **ES6 support**, with [babel](https://babeljs.io/)
+* **Minify** with [UglifyJS](https://github.com/mishoo/UglifyJS)
+* **Sourcemaps**
 
-## Setup
+### CSS
+* **Sass** compile with [libsass](https://github.com/sass/libsass)
+* **Vendor prefixes** with [autoprefixer](https://github.com/postcss/autoprefixer)
+* **Minify** with [clean-css](https://github.com/jakubpawlowicz/clean-css)
+* **Globbing**
+* **Base64 encode images**
+* **Sourcemaps**
 
-### Get the code
+### SVG
+* **Svgstore** with [gulp-svgstore](https://github.com/w0rm/gulp-svgstore)
+* **Minify** with [SVGO](https://github.com/svg/svgo)
 
-1. Clone this repo in to your drupal theme and rename it to `gulpfile.js`
-  <pre>git clone git@github.com:kostym/drupal-7-gulpfile.js.git gulpfile.js</pre>
+### General
+* [Browsersync](http://www.browsersync.io/)
 
-2. Copy the `gulpfile.config.js` to theme folder so it's in the same folder as `gulpfile.js`
+## Getting Started
 
-3. Change the configuration file `gulpfile.config.js` to match your needs.
+### Dependencies
+Make sure these are installed first.
 
-### Install requirements
+* [Node.js](http://nodejs.org)
+* [Gulp](http://gulpjs.com) `sudo npm install -g gulp`
 
+### Quick setup
 
-###Tasks
+1. Clone this repo in to your drupal theme, and name it `gulpfile.js`
+  <pre>
+  $ cd path/to/your/drupal/theme/
+  $ git clone git@github.com:kostym/drupal-7-gulpfile.js.git gulpfile.js
+  </pre>
+
+2. Copy and rename the `default.gulpfile.config.js` into your theme folder, so it's in the same folder as `gulpfile.js`
+	<pre>$ cp gulpfile.js/default.gulpfile.config.js gulpfile.config.js</pre>
+
+3. Same with `default.package.json`, copy and rename. <i>**Note:** If you already have a package.json you need to merge theme manually.</i>
+	<pre>$ cp gulpfile.js/default.package.json package.json </pre>
+	
+4. Install all npm packages
+	<pre>$ npm install</pre>
+
+5. Last, change the configuration in your copied `gulpfile.config.js` to match your needs.
+
+#### Browsersync CSS injection
+For the Browsersync CSS injection to work, we need to include CSS files using the \<link> element instead of @import. We recommend to download and enable the [Link CSS](https://www.drupal.org/project/link_css) module.
+
+## Gulp tasks
+
+Run a task: `gulp [TaskGoesHere]`
 
 * watch
 * clean
 * compile
 * default
 
-#### JS only
+#### JS specific
 
 * js-watch
 * js-clean
 * js-compile
 
-#### SVG only
+#### SVG specific
 
 * svg-watch
 * svg-clean
 * svg-compile
 
-####CSS only
+####CSS specific
 
 * css-watch
 * css-clean
 * css-compile
 
-###flags
+### Flags
 
 `--prod`
-
-## Settings
-
-###### gulpfile.config.js
-```javascript
-module.exports = {
-  'general': {
-    'pathToEditor': '/Applications/PhpStorm.app/Contents/MacOS/phpstorm',
-    'plugins': {
-      'browserSync': {
-        'proxy': 'loc.yoursite.com',
-        'open': false
-      }
-    }
-  },
-  'tasks': {
-    'css': {
-      'destinationFolder': './dist',
-      'sassFiles': [
-        './scss/style.scss'
-      ],
-      'filesToWatch': [
-        './scss/**/*.scss',
-        './kostym_components/**/*.scss'
-      ],
-      'plugins': {
-        'base64': {
-          'baseDir': './dist',
-          'extensions': ['svg']
-        },
-        'autoprefixer': {
-          'browsers': ['last 2 versions', 'ie >= 9'],
-          'cascade': false
-        }
-      }
-    },
-    'js': {
-      'jsFiles': './kostym_components/**/*.js',
-      'destinationFolder': './dist',
-      'outputFileName': 'script.js'
-    },
-    'svg': {
-      'svgStoreName': 'icons',
-      'svgFiles': './images/svg/icons/*.svg',
-      'destinationFolder': './dist',
-      'plugins': {
-        'svgmin': {
-          'plugins': [{
-            'removeUnknownsAndDefaults': true
-          }]
-        }
-      }
-    }
-  }
-};
-```
-## Example drupal theme
-<pre>
-. example-drupal-theme
-├── README.md
-├── dist
-├── gulpfile.config.js
-├── gulpfile.js
-│   ├── index.js
-│   ├── css
-│   │   ├── css-error.png
-│   │   ├── css.js
-│   │   └── css.png
-│   ├── js
-│   │   ├── js-error.png
-│   │   ├── js.js
-│   │   └── js.png
-│   └── svg
-│       ├── svg.js
-│       └── svg.png
-├── images
-│   └── svg
-│       └── icons
-├── kostym_components
-├── logo.png
-├── node_modules
-├── onion.info
-├── package.json
-├── screenshot.png
-├── scss
-│   └── onion.scss
-└── template.php
-</pre>
-## eslint
-
-
-## Recommendations
-
-Use drupal module link_css to enable broswesync to inject css.
-
-Include eslint and csscomb setting files in gulp repo

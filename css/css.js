@@ -22,11 +22,6 @@ var cssBase64 = require('gulp-base64');
 var path = require('path');
 var exec = require('child_process').exec;
 
-Date.prototype.timeNow = function() {
-  'use strict';
-  return ((this.getHours() < 10) ? '0' : '') + this.getHours() + ':' + ((this.getMinutes() < 10) ? '0' : '' ) + this.getMinutes() + ':' + ((this.getSeconds() < 10) ? '0' : '') + this.getSeconds();
-};
-
 var browserSync;
 exports.bs = function(bs) {
   'use strict';

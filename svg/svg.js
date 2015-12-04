@@ -16,11 +16,6 @@ var notifier = require('node-notifier');
 var svgstore = require('gulp-svgstore');
 var svgmin = require('gulp-svgmin');
 
-Date.prototype.timeNow = function() {
-  'use strict';
-  return ((this.getHours() < 10) ? '0' : '') + this.getHours() + ':' + ((this.getMinutes() < 10) ? '0' : '' ) + this.getMinutes() + ':' + ((this.getSeconds() < 10) ? '0' : '') + this.getSeconds();
-};
-
 // ///////////////////////////////
 // Tasks
 // * svg-watch

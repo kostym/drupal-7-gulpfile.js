@@ -20,11 +20,6 @@ var argv = require('yargs').argv;
 var eslint = require('gulp-eslint');
 var browserSync;
 
-Date.prototype.timeNow = function() {
-  'use strict';
-  return ((this.getHours() < 10) ? '0' : '') + this.getHours() + ':' + ((this.getMinutes() < 10) ? '0' : '' ) + this.getMinutes() + ':' + ((this.getSeconds() < 10) ? '0' : '') + this.getSeconds();
-};
-
 exports.bs = function(bs) {
   'use strict';
   browserSync = bs;
